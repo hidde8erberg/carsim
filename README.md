@@ -1,2 +1,2 @@
 # carsim
-Two Dimensional top-view car simulator, used for deep learning.
+Three Dimensional car simulator made in Unity3d, used for deep learning.
