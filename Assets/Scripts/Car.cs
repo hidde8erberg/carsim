@@ -9,7 +9,7 @@ public class Car : MonoBehaviour {
     public WheelCollider wheel_back_right;
 
     private float max_steer_angle = 45f;
-    private float motorTorque = 500f;
+    private float motorTorque = 99999999999999999f;
 
     // Use this for initialization
     void Start () {
