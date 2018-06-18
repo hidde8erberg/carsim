@@ -1,9 +1,17 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-public class CarController : MonoBehaviour
-{
+public class CarController : MonoBehaviour {
+
+    private float m_horizontalInput;
+    private float m_verticalInput;
+    private float m_steeringAngle;
+
+    public WheelCollider frontLeftWheel, frontRightWheel;
+    public WheelCollider rearLeftWheel, rearRightWheel;
+    public Transform frontLeftTransform, frontRightTransform;
+    public Transform rearLeftTransform, rearRightTransform;
+    public float maxSteerAngle = 30;
+    public float motorForce = 50;
 
     public void GetInput()
     {
@@ -14,22 +22,22 @@ public class CarController : MonoBehaviour
     private void Steer()
     {
         m_steeringAngle = maxSteerAngle * m_horizontalInput;
-        frontDriverW.steerAngle = m_steeringAngle;
-        frontPassengerW.steerAngle = m_steeringAngle;
+        frontLeftWheel.steerAngle = m_steeringAngle;
+        frontRightWheel.steerAngle = m_steeringAngle;
     }
 
     private void Accelerate()
     {
-        frontDriverW.motorTorque = m_verticalInput * motorForce;
-        frontPassengerW.motorTorque = m_verticalInput * motorForce;
+        frontLeftWheel.motorTorque = m_verticalInput * motorForce;
+        frontRightWheel.motorTorque = m_verticalInput * motorForce;
     }
 
     private void UpdateWheelPoses()
     {
-        UpdateWheelPose(frontDriverW, frontDriverT);
-        UpdateWheelPose(frontPassengerW, frontPassengerT);
-        UpdateWheelPose(rearDriverW, rearDriverT);
-        UpdateWheelPose(rearPassengerW, rearPassengerT);
+        UpdateWheelPose(frontLeftWheel, frontLeftTransform);
+        UpdateWheelPose(frontRightWheel, frontRightTransform);
+        UpdateWheelPose(rearLeftWheel, rearLeftTransform);
+        UpdateWheelPose(rearRightWheel, rearRightTransform);
     }
 
     private void UpdateWheelPose(WheelCollider _collider, Transform _transform)
@@ -51,14 +59,4 @@ public class CarController : MonoBehaviour
         UpdateWheelPoses();
     }
 
-    private float m_horizontalInput;
-    private float m_verticalInput;
-    private float m_steeringAngle;
-
-    public WheelCollider frontDriverW, frontPassengerW;
-    public WheelCollider rearDriverW, rearPassengerW;
-    public Transform frontDriverT, frontPassengerT;
-    public Transform rearDriverT, rearPassengerT;
-    public float maxSteerAngle = 30;
-    public float motorForce = 50;
 }
