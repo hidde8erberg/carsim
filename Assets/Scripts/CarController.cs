@@ -11,7 +11,11 @@ public class CarController : MonoBehaviour {
     public Transform frontLeftTransform, frontRightTransform;
     public Transform rearLeftTransform, rearRightTransform;
     public float maxSteerAngle = 30;
-    public float motorForce = 50;
+    public float motorForce;
+
+	[Header("Sensors")]
+	public float sensorlength = 4f;
+	public float frontSensorPosition = 0.5f;
 
     public void GetInput()
     {
@@ -28,8 +32,13 @@ public class CarController : MonoBehaviour {
 
     private void Accelerate()
     {
-        frontLeftWheel.motorTorque = m_verticalInput * motorForce;
-        frontRightWheel.motorTorque = m_verticalInput * motorForce;
+		if (m_verticalInput > 0) {
+			frontLeftWheel.motorTorque = m_verticalInput * motorForce;
+			frontRightWheel.motorTorque = m_verticalInput * motorForce;
+		} else {
+			frontLeftWheel.brakeTorque = -m_verticalInput * motorForce;
+			frontRightWheel.brakeTorque = -m_verticalInput * motorForce;
+		}
     }
 
     private void UpdateWheelPoses()
@@ -51,12 +60,27 @@ public class CarController : MonoBehaviour {
         _transform.rotation = _quat;
     }
 
+	private void Sensors() 
+	{
+		RaycastHit hit; 
+		Vector3 sensorStartPosition = transform.position;
+		sensorStartPosition.z += frontSensorPosition;
+		sensorStartPosition.y += 1f;
+
+		if (Physics.Raycast(sensorStartPosition, transform.forward, out hit, sensorlength)) {
+
+		}
+		Debug.DrawLine(sensorStartPosition, hit.point);
+	}
+
     private void FixedUpdate()
     {
         GetInput();
         Steer();
         Accelerate();
         UpdateWheelPoses();
+		Sensors();
+		Debug.Log(m_verticalInput);
     }
 
 }
