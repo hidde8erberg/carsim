@@ -53,12 +53,28 @@ public class CarController : MonoBehaviour {
         _transform.rotation = _quat;
     }
 
+    private void RayDistance()
+    {
+        RaycastHit hit;
+        Vector3 origin = transform.position + new Vector3(0, 0.75f, 0);
+        Vector3 forward = transform.TransformDirection(Vector3.forward) * 25;
+        Ray ray1 = new Ray(origin, forward);
+        Debug.DrawRay(origin, forward, Color.green);
+
+        // shortest distance is 2.46136f
+        
+        if (Physics.Raycast(ray1, out hit)) {
+            Debug.Log(hit.distance);
+        }
+    }
+
     private void FixedUpdate()
     {
         GetInput();
         Steer();
         Accelerate();
         UpdateWheelPoses();
+        RayDistance();
     }
 
 }
