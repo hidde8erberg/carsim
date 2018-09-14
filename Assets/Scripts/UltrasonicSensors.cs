@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using System.Collections;
 using UnityEngine.EventSystems;
 using UnityEngine.Serialization;
@@ -24,13 +25,15 @@ public class UltrasonicSensors : MonoBehaviour
 	private void DrawLines()
 	{
 		var positionStart = Start.transform.position;
-		var alpha = 360 / Amount;
-		
+		var alpha = 360 / (float) Amount;
+		Debug.Log(alpha);
 		
 		for (var i = 0; i <= Amount; i++)
 		{
 			var beta = alpha * i;
 			var direction = Car.transform.rotation * (Quaternion.AngleAxis(beta, Vector3.down) * Vector3.forward);
+			
+			Debug.Log("Angle " + beta.ToString("F4") + ": " + direction);
 
 			RaycastHit hit;
 			

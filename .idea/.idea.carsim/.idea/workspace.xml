@@ -2,9 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="cfe56504-76e0-4c6b-9027-f49353018311" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.carsim/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.carsim/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/UltrasonicSensors.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/UltrasonicSensors.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/game.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/game.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ProjectSettings/EditorSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/EditorSettings.asset" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -16,41 +16,43 @@
     <session id="-458770940">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
+          <entry key="project.closed" value="1" />
+          <entry key="project.open.time.39" value="1" />
           <entry key="project.open.time.60" value="1" />
-          <entry key="project.opened" value="1" />
+          <entry key="project.opened" value="2" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="cs" value="2648" />
+          <entry key="cs" value="2830" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="C#" value="2648" />
+          <entry key="C#" value="2830" />
         </counts>
       </usages-collector>
     </session>
   </component>
   <component name="FileEditorManager">
-    <leaf>
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Assets/Scripts/UltrasonicSensors.cs">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="620">
-              <caret line="55" column="42" selection-start-line="55" selection-start-column="42" selection-end-line="55" selection-end-column="42" />
+            <state relative-caret-position="120">
+              <caret line="18" column="25" selection-start-line="18" selection-start-column="25" selection-end-line="18" selection-end-column="25" />
               <folding>
-                <marker date="1536775302730" expanded="false" signature="6:109" ph="..." />
-                <marker date="1536775302730" expanded="true" signature="157:1583" ph="{...}" />
-                <marker date="1536775302730" expanded="true" signature="566:1479" ph="{...}" />
-                <marker date="1536775302730" expanded="true" signature="687:1476" ph="{...}" />
-                <marker date="1536775302730" expanded="true" signature="924:1377" ph="{...}" />
-                <marker date="1536775302730" expanded="true" signature="1067:1109" ph="{...}" />
-                <marker date="1536775302730" expanded="true" signature="1152:1195" ph="{...}" />
-                <marker date="1536775302730" expanded="true" signature="1204:1244" ph="{...}" />
-                <marker date="1536775302730" expanded="true" signature="1385:1471" ph="{...}" />
-                <marker date="1536775302730" expanded="true" signature="1509:1530" ph="{...}" />
-                <marker date="1536775302730" expanded="true" signature="1560:1581" ph="{...}" />
+                <marker date="1536952642554" expanded="true" signature="6:123" ph="..." />
+                <marker date="1536952642554" expanded="true" signature="171:1691" ph="{...}" />
+                <marker date="1536952642554" expanded="true" signature="580:1587" ph="{...}" />
+                <marker date="1536952642554" expanded="true" signature="726:1584" ph="{...}" />
+                <marker date="1536952642554" expanded="true" signature="1032:1485" ph="{...}" />
+                <marker date="1536952642554" expanded="true" signature="1175:1217" ph="{...}" />
+                <marker date="1536952642554" expanded="true" signature="1260:1303" ph="{...}" />
+                <marker date="1536952642554" expanded="true" signature="1312:1352" ph="{...}" />
+                <marker date="1536952642554" expanded="true" signature="1493:1579" ph="{...}" />
+                <marker date="1536952642554" expanded="true" signature="1617:1638" ph="{...}" />
+                <marker date="1536952642554" expanded="true" signature="1668:1689" ph="{...}" />
               </folding>
             </state>
           </provider>
@@ -77,7 +79,7 @@
     <detection-done>true</detection-done>
     <sorting>DEFINITION_ORDER</sorting>
   </component>
-  <component name="ProjectFrameBounds" extendedState="7">
+  <component name="ProjectFrameBounds" extendedState="6">
     <option name="x" value="1280" />
     <option name="width" value="1280" />
     <option name="height" value="1040" />
@@ -88,12 +90,12 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="SolutionExplorer">
-        <option name="show-all-files" value="false" />
-      </pane>
       <pane id="FileSystemExplorer" />
       <pane id="UnityExplorer">
         <option name="show-hidden-items" value="false" />
+      </pane>
+      <pane id="SolutionExplorer">
+        <option name="show-all-files" value="false" />
       </pane>
     </panes>
   </component>
@@ -140,12 +142,13 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1536767716403</updated>
-      <workItem from="1536767740431" duration="6690000" />
+      <workItem from="1536767740431" duration="6936000" />
+      <workItem from="1536950985316" duration="1775000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="6690000" />
+    <option name="totallyTimeSpent" value="8711000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -157,21 +160,12 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="2576" height="1056" extended-state="7" />
+    <frame x="-8" y="-8" width="2576" height="1056" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info id="Favorites" side_tool="true" />
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.25198728" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.25397456" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
-      <window_info anchor="bottom" id="Get Gist" />
-      <window_info anchor="bottom" id="NuGet" />
-      <window_info anchor="bottom" id="Docker" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Unity" />
-      <window_info anchor="bottom" id="Database Changes" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Version Control" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Unit Tests" />
-      <window_info anchor="bottom" id="Terminal" />
-      <window_info anchor="bottom" id="Event Log" side_tool="true" />
+      <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
       <window_info anchor="bottom" id="Run" order="2" />
@@ -179,12 +173,21 @@
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
-      <window_info anchor="right" id="Errors In Solution" />
-      <window_info anchor="right" id="Database" />
-      <window_info anchor="right" id="Unit Tests Coverage" />
+      <window_info anchor="bottom" id="Get Gist" order="7" />
+      <window_info anchor="bottom" id="NuGet" order="8" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Docker" order="9" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Version Control" order="10" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Unity" order="11" />
+      <window_info anchor="bottom" id="Database Changes" order="12" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Unit Tests" order="13" />
+      <window_info anchor="bottom" id="Terminal" order="14" />
+      <window_info anchor="bottom" id="Event Log" order="15" side_tool="true" />
       <window_info anchor="right" id="Commander" order="0" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+      <window_info anchor="right" id="Errors In Solution" order="3" />
+      <window_info anchor="right" id="Database" order="4" />
+      <window_info anchor="right" id="Unit Tests Coverage" order="5" />
     </layout>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -208,20 +211,20 @@
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/Assets/Scripts/UltrasonicSensors.cs">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="620">
-          <caret line="55" column="42" selection-start-line="55" selection-start-column="42" selection-end-line="55" selection-end-column="42" />
+        <state relative-caret-position="120">
+          <caret line="18" column="25" selection-start-line="18" selection-start-column="25" selection-end-line="18" selection-end-column="25" />
           <folding>
-            <marker date="1536775302730" expanded="false" signature="6:109" ph="..." />
-            <marker date="1536775302730" expanded="true" signature="157:1583" ph="{...}" />
-            <marker date="1536775302730" expanded="true" signature="566:1479" ph="{...}" />
-            <marker date="1536775302730" expanded="true" signature="687:1476" ph="{...}" />
-            <marker date="1536775302730" expanded="true" signature="924:1377" ph="{...}" />
-            <marker date="1536775302730" expanded="true" signature="1067:1109" ph="{...}" />
-            <marker date="1536775302730" expanded="true" signature="1152:1195" ph="{...}" />
-            <marker date="1536775302730" expanded="true" signature="1204:1244" ph="{...}" />
-            <marker date="1536775302730" expanded="true" signature="1385:1471" ph="{...}" />
-            <marker date="1536775302730" expanded="true" signature="1509:1530" ph="{...}" />
-            <marker date="1536775302730" expanded="true" signature="1560:1581" ph="{...}" />
+            <marker date="1536952642554" expanded="true" signature="6:123" ph="..." />
+            <marker date="1536952642554" expanded="true" signature="171:1691" ph="{...}" />
+            <marker date="1536952642554" expanded="true" signature="580:1587" ph="{...}" />
+            <marker date="1536952642554" expanded="true" signature="726:1584" ph="{...}" />
+            <marker date="1536952642554" expanded="true" signature="1032:1485" ph="{...}" />
+            <marker date="1536952642554" expanded="true" signature="1175:1217" ph="{...}" />
+            <marker date="1536952642554" expanded="true" signature="1260:1303" ph="{...}" />
+            <marker date="1536952642554" expanded="true" signature="1312:1352" ph="{...}" />
+            <marker date="1536952642554" expanded="true" signature="1493:1579" ph="{...}" />
+            <marker date="1536952642554" expanded="true" signature="1617:1638" ph="{...}" />
+            <marker date="1536952642554" expanded="true" signature="1668:1689" ph="{...}" />
           </folding>
         </state>
       </provider>
