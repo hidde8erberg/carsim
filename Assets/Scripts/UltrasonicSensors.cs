@@ -13,7 +13,7 @@ public class UltrasonicSensors : MonoBehaviour
 	public float DetectionDistance = 10f;
 	
 	[Range(1, 100)]
-	public int Amount = 10;
+	public int Amount = 5;
 
 	public float DistanceWarning = 5f;
 	public float DistanceDanger = 3f;
@@ -25,7 +25,7 @@ public class UltrasonicSensors : MonoBehaviour
 	private void DrawLines()
 	{
 		var positionStart = Start.transform.position;
-		var alpha = 360 / (float) Amount;
+		var alpha = 180 / (float) Amount;
 		Debug.Log(alpha);
 		
 		for (var i = 0; i <= Amount; i++)
@@ -66,12 +66,7 @@ public class UltrasonicSensors : MonoBehaviour
 		}
 	}
 
-	private void OnPostRender()
-	{
-		DrawLines();
-	}
-
-	private void OnDrawGizmos()
+	private void FixedUpdate()
 	{
 		DrawLines();
 	}

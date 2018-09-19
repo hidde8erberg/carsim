@@ -74,7 +74,7 @@ public class CarController : MonoBehaviour {
         Steer();
         Accelerate();
         UpdateWheelPoses();
-        RayDistance();
+        // RayDistance();
     }
 
 }
