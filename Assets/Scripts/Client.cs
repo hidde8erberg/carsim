@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
@@ -15,12 +16,13 @@ public class Client : MonoBehaviour {
         UdpClient.Client.Bind(new IPEndPoint(IPAddress.Any, PORT));
     }
 
-	void FixedUpdate () {
-        float input = Input.GetAxis("Vertical");
-        if (input != 0)
-        {
-            var data = Encoding.UTF8.GetBytes("GOOO");
-            UdpClient.Send(data, data.Length, "127.0.0.1", PORT);
-        }
+    void FixedUpdate() {
+        var distances = new float[] { 1, 2, 3, 4, 5, 6, 7, 8 };
+        var bytearray = new byte[distances.Length * 4];
+        Buffer.BlockCopy(distances, 0, bytearray, 0, bytearray.Length);
+
+        // var data = Encoding.UTF8.GetBytes(distances);
+        UdpClient.Send(bytearray, bytearray.Length, "127.0.0.1", PORT);
+        
     }
 }
