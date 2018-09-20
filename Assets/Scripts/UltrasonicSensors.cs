@@ -13,7 +13,10 @@ public class UltrasonicSensors : MonoBehaviour
 	public float DetectionDistance = 10f;
 	
 	[Range(1, 100)]
-	public int Amount = 5;
+	public int Amount = 4;
+
+    [Range(1, 360)]
+    public int Angle = 140;
 
 	public float DistanceWarning = 5f;
 	public float DistanceDanger = 3f;
@@ -25,12 +28,12 @@ public class UltrasonicSensors : MonoBehaviour
 	private void DrawLines()
 	{
 		var positionStart = Start.transform.position;
-		var alpha = 180 / (float) Amount;
-		Debug.Log(alpha);
+		var alpha = Angle / (float) Amount;
+		// Debug.Log(alpha);
 		
 		for (var i = 0; i <= Amount; i++)
 		{
-			var beta = alpha * i;
+			var beta = alpha * i - (Angle/2);
 			var direction = Car.transform.rotation * (Quaternion.AngleAxis(beta, Vector3.down) * Vector3.forward);
 			
 			Debug.Log("Angle " + beta.ToString("F4") + ": " + direction);
