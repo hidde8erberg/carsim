@@ -6,4 +6,6 @@ sock.bind(('localhost', 11111))
 
 while True:
     data, addr = sock.recvfrom(1024)
-    print(np.fromstring(data, np.float32))
+    distances = np.fromstring(data, np.float32)
+
+    print(distances)

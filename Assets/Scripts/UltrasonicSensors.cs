@@ -15,7 +15,7 @@ public class UltrasonicSensors : MonoBehaviour
 	public float DetectionDistance = 10f;
 	
 	[Range(1, 100)]
-	public int Amount = 4;
+	public int Amount = 5;
 
     [Range(1, 360)]
     public int Angle = 140;
@@ -27,7 +27,7 @@ public class UltrasonicSensors : MonoBehaviour
 	public Color ColorWarning = new Color(0, 0, 255); 
 	public Color ColorDanger = new Color(255, 0, 0);
 
-	private Line[] _lines;
+	public Line[] _lines;
 
 	private void DoRaycast()
 	{
@@ -45,7 +45,7 @@ public class UltrasonicSensors : MonoBehaviour
 			
 			var direction = Car.transform.rotation * (Quaternion.AngleAxis(beta, Vector3.down) * Vector3.forward);
 			
-			Debug.Log("Angle " + beta + ": " + direction);
+			// Debug.Log("Angle " + beta + ": " + direction);
 
 			RaycastHit hit;
 			
@@ -110,7 +110,7 @@ public class UltrasonicSensors : MonoBehaviour
 	{
 		DoRaycast();
 	}
-
+    /*
 	private void OnDrawGizmos()
 	{
 		if (Application.isPlaying) return;
@@ -118,13 +118,13 @@ public class UltrasonicSensors : MonoBehaviour
 		DoRaycast();	
 		DrawLines();
 	}
-
+    */
 	private void OnPostRender()
 	{
 		DrawLines();
 	}
-
-	private class Line
+    
+	public class Line
 	{
 		public Vector3 Origin { get; private set; }
 		public Vector3 Direction { get; private set; }
