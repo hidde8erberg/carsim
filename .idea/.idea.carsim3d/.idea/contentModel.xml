@@ -4,21 +4,19 @@
     <e p="C:\Users\Hidde\.Rider2018.2\system\extResources" t="IncludeRecursive" />
     <e p="C:\Users\Hidde\.Rider2018.2\system\resharper-host\Local\Transient\ReSharperHost\v182\SolutionCaches\_carsim3d.207639706.00" t="ExcludeRecursive" />
     <e p="C:\Users\Hidde\Documents\Unity\carsim3d" t="IncludeRecursive">
-      <e p="Assets" t="Include">
-        <e p="Scripts" t="Include">
-          <e p="CameraController.cs" t="Include" />
-          <e p="CarController.cs" t="Include" />
-          <e p="Client.cs" t="Include" />
-          <e p="UltrasonicSensors.cs" t="Include" />
-        </e>
+      <e p="Assembly-CSharp.csproj" t="IncludeRecursive" />
+      <e p="Assets\Scripts" t="Include">
+        <e p="CameraController.cs" t="Include" />
+        <e p="CarController.cs" t="Include" />
+        <e p="Client.cs" t="Include" />
+        <e p="UltrasonicSensors.cs" t="Include" />
       </e>
-      <e p="carsim3d.csproj" t="IncludeRecursive" />
       <e p="carsim3d.sln" t="IncludeFlat" />
       <e p="Library" t="ExcludeRecursive" />
+      <e p="obj" t="ExcludeRecursive" />
       <e p="packages" t="ExcludeRecursive" />
       <e p="Temp" t="ExcludeRecursive">
-        <e p="UnityVS_bin\Debug" t="ExcludeRecursive" />
-        <e p="UnityVS_obj\Debug" t="ExcludeRecursive" />
+        <e p="bin" t="ExcludeRecursive" />
       </e>
     </e>
   </component>
