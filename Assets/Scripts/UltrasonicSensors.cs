@@ -51,7 +51,7 @@ public class UltrasonicSensors : MonoBehaviour
 			
 			if (Physics.Raycast(positionStart, direction, out hit, DetectionDistance))
 			{
-				var distance = Vector3.Distance(positionStart, hit.transform.position);
+				var distance = Vector3.Distance(positionStart, hit.point);
 				
 				_lines[i] = new Line(positionStart, direction, distance);
 				Debug.Log("Detected object: " + distance);
