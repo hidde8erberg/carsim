@@ -9,6 +9,7 @@
         <e p="CameraController.cs" t="Include" />
         <e p="CarController.cs" t="Include" />
         <e p="Client.cs" t="Include" />
+        <e p="Server.cs" t="Include" />
         <e p="UltrasonicSensors.cs" t="Include" />
       </e>
       <e p="carsim3d.sln" t="IncludeFlat" />

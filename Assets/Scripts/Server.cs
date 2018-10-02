@@ -6,11 +6,11 @@ public class Server : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		
+		// connect to port
 	}
 	
 	// Update is called once per frame
-	void Update () {
-		
+	void FixedUpdate () {
+		// inputs to controls
 	}
 }

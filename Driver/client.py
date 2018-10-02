@@ -2,14 +2,12 @@ import socket
 import numpy as np
 
 
-def server():
+def client():
     ip = 'localhost'
-    port = 11111
+    port = 22222
 
     sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     sock.bind((ip, port))
 
     while True:
-        data, addr = sock.recvfrom(1024)
-        distances = np.fromstring(data, np.float32)
-        print(distances)
+        sock.sendto(bytes(512), (ip, port))
