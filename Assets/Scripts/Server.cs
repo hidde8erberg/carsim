@@ -1,16 +1,28 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Net;
+using System.Net.Sockets;
+using System.Text;
 using UnityEngine;
 
 public class Server : MonoBehaviour {
 
-	// Use this for initialization
+	private byte[] _data = new byte[1024];
+	private IPEndPoint ipep;
+	private UdpClient sock;
+	private IPEndPoint sender;
+	
 	void Start () {
 		// connect to port
+		ipep = new IPEndPoint(IPAddress.Any, 22222);
+		sock = new UdpClient(ipep);
+
+		sender = new IPEndPoint(IPAddress.Any, 0);
+
 	}
-	
-	// Update is called once per frame
+
 	void FixedUpdate () {
 		// inputs to controls
+		_data = sock.Receive(ref sender);
+		
+		Debug.Log(_data);
 	}
 }

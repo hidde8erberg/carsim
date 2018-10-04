@@ -10,4 +10,5 @@ def client():
     sock.bind((ip, port))
 
     while True:
-        sock.sendto(bytes(512), (ip, port))
+        data = np.array([1, 1, 1])
+        sock.sendto(bytes(data), (ip, port))
