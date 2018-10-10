@@ -54,7 +54,7 @@ public class UltrasonicSensors : MonoBehaviour
 				var distance = Vector3.Distance(positionStart, hit.point);
 				
 				_lines[i] = new Line(positionStart, direction, distance);
-				Debug.Log("Detected object: " + distance);
+				// Debug.Log("Detected object: " + distance);
 			}
 			else
 			{

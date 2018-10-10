@@ -13,6 +13,41 @@ public class CarController : MonoBehaviour {
     public float maxSteerAngle = 30;
     public float motorForce;
 
+    private Vector3 start_pos;
+    private Quaternion start_rot;
+
+    public float TravelDist;
+    private Vector3 last_pos;
+
+    public void Start()
+    {
+        start_pos = transform.position;
+        start_rot = transform.rotation;
+
+        TravelDist = 0;
+        last_pos = transform.position;
+    }
+
+    private void OnCollisionEnter()
+    {
+        GetComponent<Client>().collision = 1;
+        
+        transform.position = start_pos;
+        transform.rotation = start_rot;
+
+        Rigidbody rbody = GetComponent<Rigidbody>();
+        rbody.velocity = new Vector3(0,0,0);
+        rbody.angularVelocity = new Vector3(0,0,0);
+        
+        TravelDist = 0;
+    }
+
+    private void DistanceTravelled()
+    {
+        TravelDist += Vector3.Distance(transform.position, last_pos);
+        last_pos = transform.position;
+    }
+    
     public void GetInput()
     {
         m_horizontalInput = Input.GetAxis("Horizontal");
@@ -53,28 +88,14 @@ public class CarController : MonoBehaviour {
         _transform.rotation = _quat;
     }
 
-    private void RayDistance()
-    {
-        RaycastHit hit;
-        Vector3 origin = transform.position + new Vector3(0, 0.75f, 0);
-        Vector3 forward = transform.TransformDirection(Vector3.forward) * 25;
-        Ray ray1 = new Ray(origin, forward);
-        Debug.DrawRay(origin, forward, Color.green);
-
-        // shortest distance is 2.46136f
-        
-        if (Physics.Raycast(ray1, out hit)) {
-            Debug.Log(hit.distance);
-        }
-    }
-
     private void FixedUpdate()
     {
         GetInput();
         Steer();
         Accelerate();
         UpdateWheelPoses();
-        // RayDistance();
+        DistanceTravelled();
+        Debug.Log(TravelDist);
     }
 
 }

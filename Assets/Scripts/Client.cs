@@ -7,27 +7,40 @@ public class Client : MonoBehaviour {
 
     private static readonly UdpClient UdpClient = new UdpClient();
     private static readonly int PORT = 11111;
+    public int collision;
 
     void Start () {
         UdpClient.Client.Bind(new IPEndPoint(IPAddress.Any, PORT));
+        collision = 0;
     }
 
     void FixedUpdate() {
-        var lines = GameObject.Find("Main Camera").GetComponent<UltrasonicSensors>()._lines;
-        var distances = new float[5];
-        for (var i = 0; i < lines.Length; i++) {
-            distances[i] = lines[i].Distance.HasValue ? (float)lines[i].Distance : 0f;
+        try
+        {   
+            var lines = GameObject.Find("Main Camera").GetComponent<UltrasonicSensors>()._lines;
+            var distances = new float[lines.Length + 2];
+            for (var i = 0; i < lines.Length; i++) {
+                distances[i] = lines[i].Distance.HasValue ? (float)lines[i].Distance : 0f;
+            }
+
+            Array.Reverse(distances);
+
+            distances[lines.Length] = GetComponent<CarController>().TravelDist;
+            distances[lines.Length + 1] = collision;
+
+            var bytearray = new byte[distances.Length * 4];
+            Buffer.BlockCopy(distances, 0, bytearray, 0, bytearray.Length);
+
+            UdpClient.Send(bytearray, bytearray.Length, "127.0.0.1", PORT);
+
+            lines = null;
+            distances = null;
+            collision = 0;
         }
-
-        Array.Reverse(distances);
-
-        var bytearray = new byte[distances.Length * 4];
-        Buffer.BlockCopy(distances, 0, bytearray, 0, bytearray.Length);
-
-        UdpClient.Send(bytearray, bytearray.Length, "127.0.0.1", PORT);
-
-        lines = null;
-        distances = null;
-        
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
     }
 }

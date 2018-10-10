@@ -1,5 +1,6 @@
 import socket
-import numpy as np
+# import numpy as np
+import sys
 
 
 def client():
@@ -10,5 +11,9 @@ def client():
     sock.bind((ip, port))
 
     while True:
-        data = np.array([1, 1, 1])
+        data = [1, 1, 1]
         sock.sendto(bytes(data), (ip, port))
+
+
+if __name__ == '__main__':
+    client()
