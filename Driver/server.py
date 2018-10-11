@@ -11,8 +11,8 @@ def server():
 
     while True:
         data, addr = sock.recvfrom(1024)
-        distances = np.fromstring(data, np.float32)
-        print(distances[distances.size - 2])
+        info = np.fromstring(data, np.float32)
+        print(info)
 
 
 if __name__ == '__main__':

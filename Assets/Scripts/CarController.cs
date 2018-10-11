@@ -37,7 +37,7 @@ public class CarController : MonoBehaviour {
         transform.position = start_pos;
         transform.rotation = start_rot;
 
-        Rigidbody rbody = GetComponent<Rigidbody>();
+        var rbody = GetComponent<Rigidbody>();
         rbody.velocity = new Vector3(0,0,0);
         rbody.angularVelocity = new Vector3(0,0,0);
         
@@ -82,8 +82,8 @@ public class CarController : MonoBehaviour {
 
     private void UpdateWheelPose(WheelCollider _collider, Transform _transform)
     {
-        Vector3 _pos = _transform.position;
-        Quaternion _quat = _transform.rotation;
+        var _pos = _transform.position;
+        var _quat = _transform.rotation;
 
         _collider.GetWorldPose(out _pos, out _quat);
 
@@ -98,7 +98,6 @@ public class CarController : MonoBehaviour {
         Accelerate();
         UpdateWheelPoses();
         DistanceTravelled();
-        Debug.Log(TravelDist);
     }
 
 }
