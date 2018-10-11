@@ -19,6 +19,8 @@ public class CarController : MonoBehaviour {
     public float TravelDist;
     private Vector3 last_pos;
 
+    private bool _collision;
+
     public void Start()
     {
         start_pos = transform.position;
@@ -40,6 +42,7 @@ public class CarController : MonoBehaviour {
         rbody.angularVelocity = new Vector3(0,0,0);
         
         TravelDist = 0;
+        last_pos = start_pos;
     }
 
     private void DistanceTravelled()
