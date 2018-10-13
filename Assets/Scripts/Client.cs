@@ -7,6 +7,8 @@ public class Client : MonoBehaviour {
 
     private static readonly UdpClient UdpClient = new UdpClient();
     private static readonly int PORT = 11111;
+    
+    [HideInInspector]
     public int collision;
 
     void Start () {
@@ -14,7 +16,7 @@ public class Client : MonoBehaviour {
         collision = 0;
     }
 
-    void FixedUpdate() {
+    void Update() {
         try
         {   
             var lines = GameObject.Find("Main Camera").GetComponent<UltrasonicSensors>()._lines;

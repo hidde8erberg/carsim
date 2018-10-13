@@ -10,16 +10,17 @@ public class CarController : MonoBehaviour {
     public WheelCollider rearLeftWheel, rearRightWheel;
     public Transform frontLeftTransform, frontRightTransform;
     public Transform rearLeftTransform, rearRightTransform;
-    public float maxSteerAngle = 30;
+    public float maxSteerAngle = 30f;
     public float motorForce;
+    public float speed = 0.4f;
 
     private Vector3 start_pos;
     private Quaternion start_rot;
-
-    public float TravelDist;
     private Vector3 last_pos;
-
     private bool _collision;
+    
+    [HideInInspector]
+    public float TravelDist;
 
     public void Start()
     {
@@ -53,13 +54,14 @@ public class CarController : MonoBehaviour {
     
     public void GetInput()
     {
-        m_horizontalInput = Input.GetAxis("Horizontal");
-        m_verticalInput = Input.GetAxis("Vertical");
+        // m_horizontalInput = Input.GetAxis("Horizontal");
+        // m_verticalInput = Input.GetAxis("Vertical");
+        m_verticalInput = speed;
     }
 
     private void Steer()
     {
-        m_steeringAngle = maxSteerAngle * m_horizontalInput;
+        m_steeringAngle = maxSteerAngle * GetComponent<Server>().steerInput;
         frontLeftWheel.steerAngle = m_steeringAngle;
         frontRightWheel.steerAngle = m_steeringAngle;
     }
