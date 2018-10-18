@@ -30,11 +30,8 @@ public class Client : MonoBehaviour {
             var lines = GameObject.Find("Main Camera").GetComponent<UltrasonicSensors>()._lines;
             var distances = new float[lines.Length + 2];
             for (var i = 0; i < lines.Length; i++) {
-                distances[i] = lines[i].Distance.HasValue ? (float)lines[i].Distance : 0f;
+                distances[i] = lines[i].Distance ?? 0;
             }
-
-            Array.Reverse(distances);
-            //Debug.Log(distances[2]);
 
             distances[lines.Length] = GetComponent<CarController>().TravelDist;
             distances[lines.Length + 1] = collision;
