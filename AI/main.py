@@ -9,5 +9,5 @@ if __name__ == '__main__':
     while True:
         print(conn.server())
         
-        if 0 > 65:
+        if conn.server()[5] > 65:
             conn.client(1)

@@ -12,8 +12,16 @@ public class Client : MonoBehaviour {
     public int collision;
 
     void Start () {
-        UdpClient.Client.Bind(new IPEndPoint(IPAddress.Any, PORT));
-        collision = 0;
+        try 
+        {
+            UdpClient.Client.Bind(new IPEndPoint(IPAddress.Any, PORT));
+            collision = 0;
+        } 
+        catch (Exception e) 
+        {
+            Debug.Log(e);
+            throw;
+        }
     }
 
     void Update() {
@@ -41,7 +49,7 @@ public class Client : MonoBehaviour {
         }
         catch (Exception e)
         {
-            Console.WriteLine(e);
+            Debug.Log(e);
             throw;
         }
     }
