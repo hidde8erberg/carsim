@@ -105,6 +105,7 @@ public class UltrasonicSensors : MonoBehaviour
 	private void FixedUpdate()
 	{
 		DoRaycast();
+		Debug.Log(_lines[1].Distance);
 	}
     /*
 	private void OnDrawGizmos()

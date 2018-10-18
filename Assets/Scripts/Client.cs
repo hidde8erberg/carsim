@@ -34,6 +34,7 @@ public class Client : MonoBehaviour {
             }
 
             Array.Reverse(distances);
+            //Debug.Log(distances[2]);
 
             distances[lines.Length] = GetComponent<CarController>().TravelDist;
             distances[lines.Length + 1] = collision;
