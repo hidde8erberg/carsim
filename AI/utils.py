@@ -1,11 +1,12 @@
 
 def sort_server(data):
-    sensors = data[:5]
-    distance = data[5]
-    if data[6] == 0:
+    length = len(data)
+    sensors = data[:length]
+    distance = data[length]
+    if data[length + 1] == 0:
         crash = False
-    elif data[6] == 1:
+    elif data[length + 1] == 1:
         crash = True
     else:
-        raise Exception(f"crash value not 0 or 1, got:{data[6]}")
+        raise Exception(f"crash value not 0 or 1, got:{data[length + 1]}")
     return sensors, distance, crash
