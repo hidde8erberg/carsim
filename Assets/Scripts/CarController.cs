@@ -2,7 +2,7 @@
 
 public class CarController : MonoBehaviour {
 
-    private float m_horizontalInput;
+    // private float m_horizontalInput;
     private float m_verticalInput;
     private float m_steeringAngle;
 
@@ -44,6 +44,7 @@ public class CarController : MonoBehaviour {
         
         TravelDist = 0;
         last_pos = start_pos;
+        // m_steeringAngle = 0;
     }
 
     private void DistanceTravelled()

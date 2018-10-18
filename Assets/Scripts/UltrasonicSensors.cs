@@ -40,8 +40,6 @@ public class UltrasonicSensors : MonoBehaviour
 			var beta = alpha * (i - offset);
 			
 			var direction = Car.transform.rotation * (Quaternion.AngleAxis(beta, Vector3.down) * Vector3.forward);
-			
-			// Debug.Log("Angle " + beta + ": " + direction);
 
 			RaycastHit hit;
 			
@@ -50,7 +48,6 @@ public class UltrasonicSensors : MonoBehaviour
 				var distance = Vector3.Distance(positionStart, hit.point);
 				
 				_lines[i] = new Line(positionStart, direction, distance);
-				// Debug.Log("Detected object: " + distance);
 			}
 			else
 			{
@@ -105,7 +102,6 @@ public class UltrasonicSensors : MonoBehaviour
 	private void FixedUpdate()
 	{
 		DoRaycast();
-		Debug.Log(_lines[1].Distance);
 	}
     /*
 	private void OnDrawGizmos()

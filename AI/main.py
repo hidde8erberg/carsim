@@ -7,7 +7,8 @@ import utils
 if __name__ == '__main__':
     conn = Connect()
     while True:
-        print(conn.server())
-        conn.client(-0.2)
-        if conn.server()[5] > 65:
-            conn.client(1)
+        a, b, c = utils.sort_server(np.array(conn.server()))
+        print(a)
+        conn.client(.5)
+        if a:
+            conn.client(0)

@@ -37,8 +37,6 @@ public class Server : MonoBehaviour
 			{	
 				var remoteIpEndPoint = new IPEndPoint(IPAddress.Any, 0);
 				var receiveBytes = udp.Receive(ref remoteIpEndPoint);
-				
-				//Debug.Log(1);
 
 				lock (lockObject)
 				{
