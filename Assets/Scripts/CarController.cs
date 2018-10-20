@@ -1,18 +1,19 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 
 public class CarController : MonoBehaviour {
 
     // private float m_horizontalInput;
-    private float m_verticalInput;
     private float m_steeringAngle;
 
     public WheelCollider frontLeftWheel, frontRightWheel;
     public WheelCollider rearLeftWheel, rearRightWheel;
     public Transform frontLeftTransform, frontRightTransform;
     public Transform rearLeftTransform, rearRightTransform;
-    public float maxSteerAngle = 30f;
+    public float maxSteerAngle = 25f;
     public float motorForce;
     public float speed = 0.4f;
+    public Text text;
 
     private Vector3 start_pos;
     private Quaternion start_rot;
@@ -21,6 +22,7 @@ public class CarController : MonoBehaviour {
     
     [HideInInspector]
     public float TravelDist;
+    public static float SteerInput;
 
     public void Start()
     {
@@ -29,6 +31,8 @@ public class CarController : MonoBehaviour {
 
         TravelDist = 0;
         last_pos = transform.position;
+
+        SteerInput = 0;
     }
 
     private void OnCollisionEnter()
@@ -44,7 +48,7 @@ public class CarController : MonoBehaviour {
         
         TravelDist = 0;
         last_pos = start_pos;
-        // m_steeringAngle = 0;
+        SteerInput = 0;
     }
 
     private void DistanceTravelled()
@@ -52,25 +56,19 @@ public class CarController : MonoBehaviour {
         TravelDist += Vector3.Distance(transform.position, last_pos);
         last_pos = transform.position;
     }
-    
-    public void GetInput()
-    {
-        // m_horizontalInput = Input.GetAxis("Horizontal");
-        // m_verticalInput = Input.GetAxis("Vertical");
-        m_verticalInput = speed;
-    }
 
     private void Steer()
     {
-        m_steeringAngle = maxSteerAngle * GetComponent<Server>().steerInput;
+        // m_steeringAngle = maxSteerAngle * GetComponent<Server>().steerInput;
+        m_steeringAngle = maxSteerAngle * SteerInput;
         frontLeftWheel.steerAngle = m_steeringAngle;
         frontRightWheel.steerAngle = m_steeringAngle;
     }
 
     private void Accelerate()
     {
-		frontLeftWheel.motorTorque = m_verticalInput * motorForce;
-		frontRightWheel.motorTorque = m_verticalInput * motorForce;
+		frontLeftWheel.motorTorque = speed * motorForce;
+		frontRightWheel.motorTorque = speed * motorForce;
         // rearLeftWheel.motorTorque = m_verticalInput * motorForce;
         // rearRightWheel.motorTorque = m_verticalInput * motorForce;
     }
@@ -96,11 +94,17 @@ public class CarController : MonoBehaviour {
 
     private void FixedUpdate()
     {
-        GetInput();
         Steer();
         Accelerate();
         UpdateWheelPoses();
         DistanceTravelled();
+        
+        text.text = "Speed: " + speed;
+    }
+    
+    public void SetSpeed(float input)
+    {
+        speed = input;
     }
 
 }

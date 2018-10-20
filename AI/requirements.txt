@@ -1,3 +1,2 @@
-#tensorflow
-tensorflow-gpu
+tensorflow #tensorflow-gpu
 numpy

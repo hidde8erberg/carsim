@@ -11,9 +11,6 @@ public class Server : MonoBehaviour
 	private static UdpClient udp;
 	private Thread thread;
 	
-	[HideInInspector]
-	public float steerInput;
-	
 	private void Start()
 	{
 		try
@@ -30,17 +27,17 @@ public class Server : MonoBehaviour
 
 	private void Receive()
 	{
-		try 
+		try
 		{
 			udp = new UdpClient(6969);
 			while (true)
-			{	
+			{
 				var remoteIpEndPoint = new IPEndPoint(IPAddress.Any, 0);
 				var receiveBytes = udp.Receive(ref remoteIpEndPoint);
 
 				lock (lockObject)
 				{
-					steerInput = BitConverter.ToSingle(receiveBytes, 0);
+					CarController.SteerInput = BitConverter.ToSingle(receiveBytes, 0);
 				}
 			}
 		} 
