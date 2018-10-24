@@ -14,17 +14,17 @@ class Connect:
 
         self.client_sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
-    def server(self):
+    def receive(self):
         data, addr = self.server_sock.recvfrom(1024)
         info = np.fromstring(data, np.float32)
         return info
 
-    def client(self, controls):
+    def send(self, controls):
         self.client_sock.sendto(bytearray(struct.pack("f", controls)), (self.ip, self.client_port))
 
 
 if __name__ == "__main__":
     connection = Connect()
     while True:
-        print(connection.server())
-        connection.client(0)
+        print(connection.receive())
+        connection.send(0)

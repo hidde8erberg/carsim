@@ -3,9 +3,10 @@ import numpy as np
 
 def sort_server(data):
     length = len(data)
-    sensors = np.array(data[:length - 2])
+    sensors = np.array([data[:length - 2]])
+    sensors /= 15
     s_reversed = sensors[::-1]
-    distance = data[length - 2]
+    distance = [data[length - 2]]
     if data[length - 1] == 0:
         crash = False
     elif data[length - 1] == 1:

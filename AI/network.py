@@ -1,54 +1,25 @@
-from tensorflow.keras import Sequential
-from tensorflow.keras.layers import Dense
-from tensorflow.keras.optimizers import Adam
-from collections import deque
-import random
-import numpy as np
+import tensorflow as tf
 
 
 class Network:
-    def __init__(self, epochs=100, lr=0.001):
-        self.gamma = 0.95 # discount rate
-        self.epsilon = 1.0 # exploration rate
-        self.epsilon_min = 0.01
-        self.epsilon_decay = 0.995
+    def __init__(self, epochs=500, lr=0.001):
         self.epochs = epochs
         self.learning_rate = lr
-        self.memory = deque(maxlen=2000)
-        self.model = self.init_model()
 
-    def init_model(self):
-        model = Sequential()
-        model.add(Dense(50, input_dim=5, activation='relu'))
-        model.add(Dense(50, activation='relu'))
-        model.add(Dense(50, activation='relu'))
-        model.add(Dense(1, activation='softmax'))
-        model.compile(loss='mse', optimizer=Adam(lr=self.learning_rate))
-        return model
+        self.sess = tf.Session()
 
-    def memory(self, state, action, reward, next_state, done):
-        self.memory.append((state, action, reward, next_state, done))
+        self.sensors = tf.placeholder(dtype=tf.float32, shape=[None, 5])
+        self.reward = tf.placeholder(dtype=tf.float32, shape=[None])
 
-    def run(self, state):
-        if np.random.rand() <= self.epsilon:
-            return random.randrange(1)
-        run_values = self.model.predict(state)
-        return np.argmax((run_values[0]))
+        self.layer1 = tf.layers.dense(self.sensors, 50, activation=tf.nn.relu)
+        self.dropout1 = tf.layers.dropout(self.layer1)
+        self.layer2 = tf.layers.dense(self.dropout1, 50, activation=tf.nn.relu)
+        self.dropout2 = tf.layers.dropout(self.layer2)
+        self.layer3 = tf.layers.dense(self.dropout2, 50, activation=tf.nn.relu)
+        self.dropout3 = tf.layers.dropout(self.layer3)
+        self.output = tf.layers.dense(self.dropout3, 1)
 
-    def replay(self):
-        minibatch = random.sample(self.memory, self.epochs)
-        for state, action, reward, next_state, done in minibatch:
-            target = reward
-            if not done:
-                target = (reward + self.gamma * np.amax(self.model.predict(next_state)[0]))
-            target_f = self.model.predict(state)
-            target_f[0][action] = target
-            self.model.fit(state, target_f, epochs=1, verbose=0)
-        if self.epsilon > self.epsilon_min:
-            self.epsilon *= self.epsilon_decay
-
-    def load(self, name):
-        self.model.load_weights(name)
-
-    def save(self, name):
-        self.model.save_weights(name)
+        self.probs = tf.nn.softmax(logits=self.output)
+        self.loss = tf.reduce_sum(self.reward * self.probs)
+        self.optimizer = tf.train.AdamOptimizer(self.learning_rate)
+        self.train_op = self.optimizer.minimize(self.loss)

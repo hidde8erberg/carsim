@@ -37,7 +37,19 @@ public class Server : MonoBehaviour
 
 				lock (lockObject)
 				{
-					CarController.SteerInput = BitConverter.ToSingle(receiveBytes, 0);
+					var x = BitConverter.ToSingle(receiveBytes, 0);
+					if (x > 1)
+					{
+						CarController.SteerInput = 1;
+					}
+					else if(x < -1)
+					{
+						CarController.SteerInput = -1;
+					}
+					else
+					{
+						CarController.SteerInput = x;
+					}
 				}
 			}
 		} 

@@ -8,16 +8,16 @@ public class UltrasonicSensors : MonoBehaviour
 	public Material ShadowMaterial;
 
 	[Range(0.1f, 100f)]
-	public float DetectionDistance = 10f;
+	public float DetectionDistance;
 	
 	[Range(1, 100)]
-	public int Amount = 5;
+	public int Amount;
 
     [Range(1, 360)]
-    public int Angle = 140;
+    public int Angle;
 
-	public float DistanceWarning = 5f;
-	public float DistanceDanger = 3f;
+	public float DistanceWarning;
+	public float DistanceDanger;
 	
 	public Color ColorSafe = new Color(0, 255, 0); 
 	public Color ColorWarning = new Color(0, 0, 255); 
