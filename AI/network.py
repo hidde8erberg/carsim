@@ -19,7 +19,18 @@ class Network:
         self.dropout3 = tf.layers.dropout(self.layer3)
         self.output = tf.layers.dense(self.dropout3, 1)
 
+        # https://github.com/ashutoshkrjha/Cartpole-OpenAI-Tensorflow/blob/master/cartpole.py
         self.probs = tf.nn.softmax(logits=self.output)
-        self.loss = tf.reduce_sum(self.reward * self.probs)
+        self.loss = tf.reduce_mean(self.reward * self.probs)
         self.optimizer = tf.train.AdamOptimizer(self.learning_rate)
         self.train_op = self.optimizer.minimize(self.loss)
+
+    def save(self):
+        saver = tf.train.Saver()
+        save_path = saver.save(self.sess, "models/model.ckpt")
+        print("Model saved in path: %s" % save_path)
+
+    def load(self):
+        saver = tf.train.Saver()
+        saver.restore(self.sess, "models/model.ckpt")
+        print("Model loaded")

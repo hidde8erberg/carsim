@@ -2,7 +2,6 @@ import tensorflow as tf
 
 from connect import Connect
 from network import Network
-import utils
 
 # disables stupid warning
 import os
@@ -16,7 +15,9 @@ if __name__ == '__main__':
 
     net.sess.run(tf.global_variables_initializer())
     while True:
-        sensors, distance, crash = utils.sort_server(conn.receive())
+        sensors, distance, crash = conn.receive()
+        if crash:
+            net.sess.run(tf.global_variables_initializer())
         feed_dict = {
             net.sensors: sensors
             # net.reward: distance
