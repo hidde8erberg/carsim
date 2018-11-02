@@ -9,6 +9,7 @@ class Network:
         self.sess = tf.Session()
 
         self.sensors = tf.placeholder(dtype=tf.float32, shape=[None, 5])
+        self.acts = tf.placeholder(dtype=tf.float32, shape=[None])
         self.reward = tf.placeholder(dtype=tf.float32, shape=[None])
 
         self.layer1 = tf.layers.dense(self.sensors, 50, activation=tf.nn.relu)
@@ -24,6 +25,32 @@ class Network:
         self.loss = tf.reduce_mean(self.reward * self.probs)
         self.optimizer = tf.train.AdamOptimizer(self.learning_rate)
         self.train_op = self.optimizer.minimize(self.loss)
+
+    #https://gist.github.com/shanest/535acf4c62ee2a71da498281c2dfc4f4
+    def train_step(self, obs, acts, reward):
+        batch_feed = { self.sensors: obs,
+                self.acts: acts,
+                self.reward: reward}
+        self.train_op.run(self._train, feed_dict=batch_feed)
+
+    def policy_rollout(env, agent):
+        """Run one episode."""
+
+        observation, reward, done = env.reset(), 0, False
+        obs, acts, rews = [], [], []
+
+        while not done:
+
+            env.render()
+            obs.append(observation)
+
+            action = agent.act(observation)
+            observation, reward, done, _ = env.step(action)
+
+            acts.append(action)
+            rews.append(reward)
+
+        return obs, acts, rews
 
     def save(self):
         saver = tf.train.Saver()
