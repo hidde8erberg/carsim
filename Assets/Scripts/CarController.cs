@@ -12,8 +12,10 @@ public class CarController : MonoBehaviour {
     public Transform rearLeftTransform, rearRightTransform;
     public float maxSteerAngle = 25f;
     public float motorForce;
-    public float speed = 0.4f;
-    public Text text;
+    public float acceleration = 0.4f;
+    public float maxSpeed = 2f;
+    public Text acc_text;
+    public Text speed_text;
 
     private Vector3 start_pos;
     private Quaternion start_rot;
@@ -67,10 +69,16 @@ public class CarController : MonoBehaviour {
 
     private void Accelerate()
     {
-		frontLeftWheel.motorTorque = speed * motorForce;
-		frontRightWheel.motorTorque = speed * motorForce;
-        // rearLeftWheel.motorTorque = m_verticalInput * motorForce;
-        // rearRightWheel.motorTorque = m_verticalInput * motorForce;
+        var rbody = GetComponent<Rigidbody>();
+        var mag = rbody.velocity.magnitude;
+        
+        if (mag < maxSpeed)
+        {
+            frontLeftWheel.motorTorque = acceleration * motorForce;
+            frontRightWheel.motorTorque = acceleration * motorForce;
+            // rearLeftWheel.motorTorque = m_verticalInput * motorForce;
+            // rearRightWheel.motorTorque = m_verticalInput * motorForce;
+        }
     }
 
     private void UpdateWheelPoses()
@@ -99,12 +107,17 @@ public class CarController : MonoBehaviour {
         UpdateWheelPoses();
         DistanceTravelled();
         
-        text.text = "Speed: " + speed;
+        acc_text.text = "Acceleration: " + acceleration;
+        speed_text.text = "Speed Lock: " + maxSpeed;
     }
     
-    public void SetSpeed(float input)
+    public void SetAcceleration(float input)
     {
-        speed = input;
+        acceleration = input;
     }
-
+    
+    public void SetMaxspeed(float input)
+    {
+        maxSpeed = input;
+    }
 }
