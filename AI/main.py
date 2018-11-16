@@ -24,4 +24,4 @@ if __name__ == '__main__':
         }
         x = net.sess.run(net.output, feed_dict)
         conn.send(x)
-        print(x)
+        print(distance)

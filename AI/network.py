@@ -33,25 +33,6 @@ class Network:
                 self.reward: reward}
         self.train_op.run(self._train, feed_dict=batch_feed)
 
-    def policy_rollout(env, agent):
-        """Run one episode."""
-
-        observation, reward, done = env.reset(), 0, False
-        obs, acts, rews = [], [], []
-
-        while not done:
-
-            env.render()
-            obs.append(observation)
-
-            action = agent.act(observation)
-            observation, reward, done, _ = env.step(action)
-
-            acts.append(action)
-            rews.append(reward)
-
-        return obs, acts, rews
-
     def save(self):
         saver = tf.train.Saver()
         save_path = saver.save(self.sess, "models/model.ckpt")
