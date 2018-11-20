@@ -189,7 +189,7 @@ class PGNetwork():
             
             # Save Model
             if episode % 25 == 0:
-                saver.save(sess, "./models/model.ckpt")
+                self.saver.save(sess, "./models/model.ckpt")
                 print("Model saved")
 
 
