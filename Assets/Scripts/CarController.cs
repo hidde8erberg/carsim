@@ -55,7 +55,7 @@ public class CarController : MonoBehaviour {
 
     private void DistanceTravelled()
     {
-        TravelDist += Vector3.Distance(transform.position, last_pos);
+        TravelDist += Vector3.Distance(transform.position, last_pos) * 100;
         last_pos = transform.position;
     }
 

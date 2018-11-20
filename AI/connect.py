@@ -2,7 +2,6 @@ import socket
 import struct
 import numpy as np
 
-
 class Connect:
     def __init__(self):
         self.ip = "localhost"
@@ -20,19 +19,21 @@ class Connect:
         return info
 
     def send(self, controls):
+        print(controls)
         self.client_sock.sendto(bytearray(struct.pack("f", controls)), (self.ip, self.client_port))
 
     def receive(self):
         unsorted = self.unsort_receive()
         length = len(unsorted)
         sensors = np.array([unsorted[:length - 2]])
-        sensors /= 15
         s_reversed = sensors[::-1]
-        distance = [int(unsorted[length - 2])]
+
+        distance = int(unsorted[length - 2])
         if unsorted[length - 1] == 0:
             crash = False
         elif unsorted[length - 1] == 1:
             crash = True
         else:
             raise Exception(f"crash value not 0 or 1, got:{data[length - 1]}")
+
         return s_reversed, distance, crash

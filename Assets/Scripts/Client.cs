@@ -24,7 +24,7 @@ public class Client : MonoBehaviour {
         }
     }
 
-    void Update() {
+    void FixedUpdate() {
         try
         {   
             var lines = GameObject.Find("Main Camera").GetComponent<UltrasonicSensors>()._lines;
