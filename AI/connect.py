@@ -25,7 +25,7 @@ class Connect:
     def receive(self):
         unsorted = self.unsort_receive()
         length = len(unsorted)
-        sensors = np.array([unsorted[:length - 2]])
+        sensors = np.array(unsorted[:length - 2])
         sensors /= 15
         s_reversed = sensors[::-1]
         distance = unsorted[length - 2]
