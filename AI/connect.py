@@ -26,7 +26,8 @@ class Connect:
         unsorted = self.unsort_receive()
         length = len(unsorted)
         sensors = np.array(unsorted[:length - 2])
-        sensors /= 15
+        sensors[sensors == 0] = 20
+        sensors = np.divide(sensors, 20)
         s_reversed = sensors[::-1]
         distance = unsorted[length - 2]
         if unsorted[length - 1] == 0:

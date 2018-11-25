@@ -12,8 +12,8 @@ public class CarController : MonoBehaviour {
     public Transform rearLeftTransform, rearRightTransform;
     public float maxSteerAngle = 25f;
     public float motorForce;
-    public float acceleration = 0.4f;
-    public float maxSpeed = 2f;
+    public float acceleration = 0.8f;
+    public float maxSpeed = 7f;
     public Text acc_text;
     public Text speed_text;
 

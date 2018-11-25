@@ -7,8 +7,11 @@ public class UltrasonicSensors : MonoBehaviour
 
 	public Material ShadowMaterial;
 
-	[Range(0.1f, 100f)]
+	[Range(0.1f, 1000f)]
 	public float DetectionDistance;
+	
+	[Range(0.1f, 100f)]
+	public float DrawDistance;
 	
 	[Range(1, 100)]
 	public int Amount;
@@ -90,13 +93,13 @@ public class UltrasonicSensors : MonoBehaviour
 	{
 		if (!Application.isPlaying)
 		{
-			Debug.DrawRay(origin, direction * DetectionDistance, color);
+			Debug.DrawRay(origin, direction * DrawDistance, color);
 			return;
 		}
 		
 		GL.Color(color);
 		GL.Vertex(origin);
-		GL.Vertex(origin + direction * DetectionDistance);
+		GL.Vertex(origin + direction * DrawDistance);
 	}
 
 	private void FixedUpdate()
