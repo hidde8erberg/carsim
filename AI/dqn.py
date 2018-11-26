@@ -180,7 +180,7 @@ class DQN:
 
     def save(self, sess):
         saver = tf.train.Saver()
-        save_path = saver.save(sess, "./models/model2.ckpt")
+        save_path = saver.save(sess, "./models/model3.ckpt")
         print("Model saved in path: %s" % save_path)
 
     def load(self, sess):
