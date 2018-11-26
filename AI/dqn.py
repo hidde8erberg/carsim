@@ -5,23 +5,26 @@ import numpy as np
 
 
 class DQN:
-    def __init__(self):
-        self.lr = 0.001
+    def __init__(self, training=False):
+        self.lr = 0.00025
         self.gamma = 0.95
         self.explore_start = 1.0
         self.explore_stop = 0.01
         self.decay_rate = 0.0001
-        self.batch_size = 10000
-        self.episodes = 1000
+        self.batch_size = 5000
+        self.episodes = 20
 
         self.conn = Connect()
-        self.memory = deque(maxlen=1000)
+        self.memory = deque(maxlen=1000000)
 
         self.create_dqn()
-        self.tensorboard()
-
         print("Model successfully initialized!")
-        self.train()
+
+        if training:
+            self.tensorboard()
+            self.train()
+        else:
+            self.run()
 
     def create_dqn(self):
         with tf.name_scope("Placeholders"):
@@ -36,7 +39,7 @@ class DQN:
             dropout2 = tf.layers.dropout(layer2)
             layer3 = tf.layers.dense(dropout2, 25, activation=tf.nn.relu, name="layer3")
             dropout3 = tf.layers.dropout(layer3)
-            self.output = tf.layers.dense(dropout3, 1, activation=tf.nn.sigmoid, name="output_layer")
+            self.output = tf.layers.dense(dropout3, 1, activation=tf.nn.tanh, name="output_layer")
 
         with tf.name_scope("Loss"):
             self.Q = tf.reduce_sum(tf.multiply(self.output, self.actions))
@@ -57,12 +60,10 @@ class DQN:
 
             if done:
                 next_state = np.zeros(state.shape)
-                if i % 10 == 0:
-                    self.store((state, action, reward, next_state))
+                self.store((state, action, reward, next_state))
                 state, reward, done = self.step(self.rand_act())
             else:
-                if i % 10 == 0:
-                    self.store((state, action, reward, next_state))
+                self.store((state, action, reward, next_state))
                 state = next_state
 
         return state
@@ -88,13 +89,11 @@ class DQN:
                     step += 1
                     explore = self.explore_stop + (self.explore_start - self.explore_stop)*np.exp(-self.decay_rate*step)
                     if explore > np.random.rand()*10:
-                        print("explore")
                         action = self.rand_act()
                     else:
                         action = sess.run(self.output, feed_dict={
-                            self.sensors: state.reshape((1, *state.shape))
+                            self.sensors: [state]
                         })
-
                     next_state, reward, done = self.step(action)
                     total_reward += reward
 
@@ -140,17 +139,30 @@ class DQN:
                         self.target_q: target_list
                     })
 
-                    summary = sess.run(self.write_op, feed_dict={
-                        self.sensors: states,
-                        self.actions: actions,
-                        self.target_q: target_list
-                    })
+                summary = sess.run(self.write_op, feed_dict={
+                    self.sensors: states,
+                    self.actions: actions,
+                    self.target_q: target_list
+                })
 
-                    if episode % 5 == 0:
-                        self.writer.add_summary(summary, episode)
-                        self.writer.flush()
+                if episode % 1 == 0:
+                    self.writer.add_summary(summary, episode)
+                    self.writer.flush()
 
-            self.save(sess)
+                self.save(sess)
+
+    def run(self):
+        config = tf.ConfigProto()
+        config.gpu_options.allow_growth = True
+        with tf.Session(config=config) as sess:
+            self.load(sess)
+
+            state, _, _ = self.recv()
+            while True:
+                action = sess.run(self.output, feed_dict={
+                    self.sensors: [state]
+                })
+                state, _, _ = self.step(action)
 
     def store(self, data):
         self.memory.append(data)
@@ -168,7 +180,7 @@ class DQN:
 
     def save(self, sess):
         saver = tf.train.Saver()
-        save_path = saver.save(sess, "./models/model.ckpt")
+        save_path = saver.save(sess, "./models/model2.ckpt")
         print("Model saved in path: %s" % save_path)
 
     def load(self, sess):
@@ -183,8 +195,11 @@ class DQN:
         return (d2 - d1) * 10
 
     def recv(self):
-        state, _, crash = self.conn.receive()
-        return state, 1, crash
+        s, _, c = self.conn.receive()
+        if not c:
+            return s, 1, c
+        elif c:
+            return s, 0, c
 
     def step(self, action):
         self.conn.send(action)

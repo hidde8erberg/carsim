@@ -20,6 +20,10 @@ class Connect:
         return info
 
     def send(self, controls):
+        if controls > 1:
+            controls = 1
+        elif controls < -1:
+            controls = -1
         self.client_sock.sendto(bytearray(struct.pack("f", controls)), (self.ip, self.client_port))
 
     def receive(self):
@@ -27,7 +31,7 @@ class Connect:
         length = len(unsorted)
         sensors = np.array(unsorted[:length - 2])
         sensors[sensors == 0] = 20
-        sensors = np.divide(sensors, 20)
+        #sensors = np.divide(sensors, 20)
         s_reversed = sensors[::-1]
         distance = unsorted[length - 2]
         if unsorted[length - 1] == 0:
