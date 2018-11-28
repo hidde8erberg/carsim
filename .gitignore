@@ -7,6 +7,7 @@ Assets/AssetStoreTools*
 UpgradeLog.htm
 UnityPackageManager/
 
+tensorboard/
 
 # Visual Studio cache directory
 .vs/
