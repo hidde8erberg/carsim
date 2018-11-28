@@ -6,13 +6,13 @@ import numpy as np
 
 class DQN:
     def __init__(self, training=False):
-        self.lr = 0.00025
+        self.lr = 0.001
         self.gamma = 0.95
         self.explore_start = 1.0
         self.explore_stop = 0.01
         self.decay_rate = 0.0001
         self.batch_size = 5000
-        self.episodes = 20
+        self.episodes = 250
 
         self.conn = Connect()
         self.memory = deque(maxlen=1000000)
@@ -53,20 +53,26 @@ class DQN:
 
     def fill_memory(self):
         state, reward, done = self.step(self.rand_act())
+        step = 0
+        max_steps = self.batch_size
 
-        for i in range(self.batch_size):
+        while True:
+            step += 1
             action = self.rand_act()
             next_state, reward, done = self.step(action)
 
-            if done:
+            if done and step >= max_steps:
+                next_state = np.zeros(state.shape)
+                self.store((state, action, reward, next_state))
+                state, reward, done = self.step(self.rand_act())
+                return state
+            elif done and step < max_steps:
                 next_state = np.zeros(state.shape)
                 self.store((state, action, reward, next_state))
                 state, reward, done = self.step(self.rand_act())
             else:
                 self.store((state, action, reward, next_state))
                 state = next_state
-
-        return state
 
     def train(self):
         state = self.fill_memory()
@@ -80,6 +86,7 @@ class DQN:
             sess.run(tf.global_variables_initializer())
             self.writer.add_graph(sess.graph)
 
+            record = 0
             step = 0
             for episode in range(1, self.episodes):
                 total_reward = 0
@@ -88,7 +95,7 @@ class DQN:
                 while not crash:
                     step += 1
                     explore = self.explore_stop + (self.explore_start - self.explore_stop)*np.exp(-self.decay_rate*step)
-                    if explore > np.random.rand()*10:
+                    if explore > np.random.rand()*2:
                         action = self.rand_act()
                     else:
                         action = sess.run(self.output, feed_dict={
@@ -139,17 +146,18 @@ class DQN:
                         self.target_q: target_list
                     })
 
-                summary = sess.run(self.write_op, feed_dict={
-                    self.sensors: states,
-                    self.actions: actions,
-                    self.target_q: target_list
-                })
+                    summary = sess.run(self.write_op, feed_dict={
+                        self.sensors: states,
+                        self.actions: actions,
+                        self.target_q: target_list
+                    })
 
-                if episode % 1 == 0:
                     self.writer.add_summary(summary, episode)
                     self.writer.flush()
 
-                self.save(sess)
+                if total_reward > record:
+                    record = total_reward
+                    self.save(sess)
 
     def run(self):
         config = tf.ConfigProto()
@@ -185,7 +193,7 @@ class DQN:
 
     def load(self, sess):
         saver = tf.train.Saver()
-        saver.restore(sess, "./models/model.ckpt")
+        saver.restore(sess, "./models/model2.ckpt")
         print("Model loaded")
 
     def rand_act(self):
