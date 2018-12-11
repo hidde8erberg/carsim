@@ -4,4 +4,4 @@ from dqn import DQN
 import os
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 
-dqn = DQN(training=False)
+dqn = DQN(training=True, tensorboard=False)

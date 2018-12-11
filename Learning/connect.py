@@ -31,7 +31,7 @@ class Connect:
         length = len(unsorted)
         sensors = np.array(unsorted[:length - 2])
         sensors[sensors == 0] = 20
-        #sensors = np.divide(sensors, 20)
+        # sensors = np.divide(sensors, 20)
         s_reversed = sensors[::-1]
         distance = unsorted[length - 2]
         if unsorted[length - 1] == 0:
@@ -39,5 +39,5 @@ class Connect:
         elif unsorted[length - 1] == 1:
             crash = True
         else:
-            raise Exception(f"crash value not 0 or 1, got:{data[length - 1]}")
+            raise Exception(f"crash value not 0 or 1, got:{unsorted[length - 1]}")
         return s_reversed, distance, crash

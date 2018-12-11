@@ -1,28 +1,36 @@
 import tensorflow as tf
-from connect import Connect
-from collections import deque
 import numpy as np
+from collections import deque
+from tqdm import tqdm
+from connect import Connect
+import matplotlib.pyplot as plt
 
 
 class DQN:
-    def __init__(self, training=False):
-        self.lr = 0.001
-        self.gamma = 0.95
-        self.explore_start = 1.0
-        self.explore_stop = 0.01
-        self.decay_rate = 0.0001
-        self.batch_size = 5000
-        self.episodes = 250
+    def __init__(self, training=False, tensorboard=False):
+        # HYPER PARAMETERS
+        self.LEARNING_RATE = 1e-5
+        self.GAMMA = 0.95
+        self.EXPLORE_START = 0.8
+        self.EXPLORE_STOP = 0.01
+        self.DECAY_RATE = 1e-4
+        self.BATCH_SIZE = 5000
+        self.SAMPLE_SIZE = 100
+        self.N_EPISODES = 45
+        
+        self.memory = deque(maxlen=100000)
+
+        self.last_dist = 0
 
         self.conn = Connect()
-        self.memory = deque(maxlen=1000000)
-
         self.create_dqn()
-        print("Model successfully initialized!")
+        print("Model successfully set up!")
 
         if training:
-            self.tensorboard()
-            self.train()
+            if tensorboard: 
+                self.tensorboard()
+            reward, loss = self.train(tensorboard)
+            self.graph(reward, loss)
         else:
             self.run()
 
@@ -46,27 +54,19 @@ class DQN:
             self.loss = tf.reduce_mean(tf.square(self.target_q - self.Q))
 
         with tf.name_scope("Train"):
-            self.opt = tf.train.AdamOptimizer(self.lr).minimize(self.loss)
+            self.opt = tf.train.AdamOptimizer(self.LEARNING_RATE).minimize(self.loss)
 
         with tf.name_scope("Accuracy"):
             self.accuracy = 1
 
     def fill_memory(self):
         state, reward, done = self.step(self.rand_act())
-        step = 0
-        max_steps = self.batch_size
 
-        while True:
-            step += 1
+        for _ in tqdm(range(self.BATCH_SIZE)):
             action = self.rand_act()
             next_state, reward, done = self.step(action)
 
-            if done and step >= max_steps:
-                next_state = np.zeros(state.shape)
-                self.store((state, action, reward, next_state))
-                state, reward, done = self.step(self.rand_act())
-                return state
-            elif done and step < max_steps:
+            if done:
                 next_state = np.zeros(state.shape)
                 self.store((state, action, reward, next_state))
                 state, reward, done = self.step(self.rand_act())
@@ -74,28 +74,35 @@ class DQN:
                 self.store((state, action, reward, next_state))
                 state = next_state
 
-    def train(self):
+        while not done:
+            state, _, done = self.step(self.rand_act())
+
+        return state
+
+    def train(self, tensorboard):
         state = self.fill_memory()
         print("Successfully filled memory, staring training...")
 
         rewards_list = []
+        loss_list = []
 
         config = tf.ConfigProto()
         config.gpu_options.allow_growth = True
         with tf.Session(config=config) as sess:
             sess.run(tf.global_variables_initializer())
-            self.writer.add_graph(sess.graph)
+            if tensorboard:
+                self.writer.add_graph(sess.graph)
 
             record = 0
             step = 0
-            for episode in range(1, self.episodes):
+            for episode in range(1, self.N_EPISODES):
                 total_reward = 0
                 crash = False
 
                 while not crash:
                     step += 1
-                    explore = self.explore_stop + (self.explore_start - self.explore_stop)*np.exp(-self.decay_rate*step)
-                    if explore > np.random.rand()*2:
+                    explore = self.EXPLORE_STOP + (self.EXPLORE_START - self.EXPLORE_STOP)*np.exp(-self.DECAY_RATE*step)
+                    if explore > np.random.rand():
                         action = self.rand_act()
                     else:
                         action = sess.run(self.output, feed_dict={
@@ -107,13 +114,15 @@ class DQN:
                     if done:
                         next_state = np.zeros(state.shape)
 
-                        print('Episode: {}'.format(episode),
-                              'Total reward: {}'.format(total_reward),
-                              #'Training loss: {:.4f}'.format(self.loss),
-                              #'Explore P: {:.4f}'.format(explore)
+                        print('Episode: {}/{}'.format(episode, self.N_EPISODES),
+                              'Reward: {}'.format(int(total_reward)),
+                              'Loss: {:.1f}'.format(loss),
+                              'Explore: {}%'.format(int(explore*100))
                               )
 
-                        rewards_list.append((episode, total_reward))
+                        loss_list.append(loss)
+                        rewards_list.append(total_reward)
+
                         self.store((state, action, reward, next_state))
 
                         state, reward, done = self.step(self.rand_act())
@@ -137,7 +146,7 @@ class DQN:
                     episode_ends = (next_states == np.zeros(states[0].shape)).all(axis=1)
                     target_q[episode_ends] = 0
 
-                    targets = rewards + self.gamma * np.max(target_q, axis=1)
+                    targets = rewards + self.GAMMA * np.max(target_q, axis=1)
                     target_list = targets.ravel()
 
                     loss, _ = sess.run([self.loss, self.opt], feed_dict={
@@ -146,18 +155,20 @@ class DQN:
                         self.target_q: target_list
                     })
 
-                    summary = sess.run(self.write_op, feed_dict={
-                        self.sensors: states,
-                        self.actions: actions,
-                        self.target_q: target_list
-                    })
-
-                    self.writer.add_summary(summary, episode)
-                    self.writer.flush()
+                    if tensorboard:
+                        summary = sess.run(self.write_op, feed_dict={
+                            self.sensors: states,
+                            self.actions: actions,
+                            self.target_q: target_list
+                        })
+                        self.writer.add_summary(summary, episode)
+                        self.writer.flush()
 
                 if total_reward > record:
                     record = total_reward
                     self.save(sess)
+
+        return rewards_list, loss_list
 
     def run(self):
         config = tf.ConfigProto()
@@ -165,7 +176,7 @@ class DQN:
         with tf.Session(config=config) as sess:
             self.load(sess)
 
-            state, _, _ = self.recv()
+            state = self.recv()
             while True:
                 action = sess.run(self.output, feed_dict={
                     self.sensors: [state]
@@ -177,7 +188,7 @@ class DQN:
 
     def sample(self):
         space = np.random.choice(np.arange(len(self.memory)),
-                                 size=int(self.batch_size/10),
+                                 size=int(self.SAMPLE_SIZE),
                                  replace=False)
         return [self.memory[i] for i in space]
 
@@ -186,39 +197,44 @@ class DQN:
         tf.summary.scalar("Loss", self.loss)
         self.write_op = tf.summary.merge_all()
 
+    def graph(self, reward, loss):
+        epis = []
+        for i in range(self.N_EPISODES-1):
+            epis.append(i)
+        plt.figure(1)
+        plt.plot(epis, reward)
+        plt.title("Reward")
+        plt.ylabel("Reward")
+        plt.xlabel("Episode")
+        plt.axis([0, self.N_EPISODES, 0, np.max(reward)])
+        plt.figure(2)
+        plt.plot(epis, loss)
+        plt.title("Loss")
+        plt.ylabel("Loss")
+        plt.xlabel("Episode")
+        plt.axis([0, self.N_EPISODES, 0, np.max(loss)])
+        plt.show()
+
     def save(self, sess):
         saver = tf.train.Saver()
-        save_path = saver.save(sess, "./models/model3.ckpt")
+        save_path = saver.save(sess, "./models/model5.ckpt")
         print("Model saved in path: %s" % save_path)
 
     def load(self, sess):
         saver = tf.train.Saver()
-        saver.restore(sess, "./models/model2.ckpt")
+        saver.restore(sess, "./models/model3.ckpt")
         print("Model loaded")
 
     def rand_act(self):
         return np.random.rand()*2 - 1
 
-    def reward(self, d1, d2):
-        return (d2 - d1) * 10
-
     def recv(self):
-        s, _, c = self.conn.receive()
-        if not c:
-            return s, 1, c
-        elif c:
-            return s, 0, c
+        s, _, _ = self.conn.receive()
+        return s
 
     def step(self, action):
         self.conn.send(action)
-        s, _, c = self.conn.receive()
-        if not c:
-            return s, 1, c
-        elif c:
-            return s, 0, c
-
-    def react(self, action):
-        s1, _, _ = self.conn.receive()
-        self.conn.send(action)
-        s2, _, _ = self.conn.receive()
-        return s1, action, 1, s2
+        s, d, c = self.conn.receive()
+        if c:
+            self.last_dist = 0
+        return s, d-self.last_dist, c

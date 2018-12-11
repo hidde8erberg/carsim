@@ -1,2 +1,4 @@
 tensorflow #tensorflow-gpu
 numpy
+tqdm
+matplotlib
