@@ -9,6 +9,8 @@ UnityPackageManager/
 
 tensorboard/
 
+_AI/
+
 # Visual Studio cache directory
 .vs/
 */.vscode/
