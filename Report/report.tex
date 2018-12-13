@@ -4,7 +4,8 @@
 \graphicspath{ {./images/} }
 
 \usepackage{authblk}
-\usepackage{amsmath}
+\usepackage{amsmath} 
+\usepackage{caption} 
 
 \begin{document}
 
@@ -38,22 +39,22 @@ With knowledge on specific machine learning techniques, the chance of creating a
 \subsection{Simulator}
 To build the simulator, Unity was used. Unity is a game engine, it enables people to make more complicated games or interactive simulators a lot quicker and less complicated. The engine uses a graphical interface with predefined objects, graphics and physics. In order to make the environment act/react, the user needs to program this manually using the Unity API (application programming interface, functions that make it easier to interact with the main program). Unity also has an asset store where people can download free or paid assets like vehicles, environments, characters and other props. 
 
-\begin{center}
+\begin{figure}
 \includegraphics[width=\linewidth]{simulator_env}
-\end{center}
+\end{figure}
 
 \subsection{Inter-process communication}
 To communicate between the simulator and the reinforcement learning network, User Datagram Protocol (UDP) is used. Packets of data are sent between the simulator and the network without much overhead, this is because UDP does not wait for delayed packets nor checks if the packets contain malformed or corrupt information. Other protocols such as TCP are more reliable as UDP, because there will be multiple attempts to deliver all packets, if some information is lost along the way it will be sent again. This is not ideal for this project, because it adds a lot of extra overhead, meaning there will be a longer delay between sending and receiving a packet, and a single missing packet is not having any significant effect on the result.
 
 \subsection{Machine learning}
-Machine learning is letting a computer behave in a way that would be described as learning if done by humans or animals[4]. This means a computer can learn something from data without being explicitly programmed to do. An artificial neural network is a common way to implement machine learning, these networks of neurons (also referred to as nodes) are a simulation of  the human brain. 
+Machine learning is letting a computer behave in a way that would be described as learning if done by humans or animals[4]. This means a computer can learn something from data without being explicitly programmed to do. An artificial neural network is a common way to implement machine learning, these networks of neurons (also referred to as nodes) are a simulation of the human brain. $ f(x)=ax+b $
 
-\begin{center}
+\begin{figure}
 \includegraphics[width=\linewidth]{neural_net}
-\end{center}
+\end{figure}
 
 \begin{flushleft}
-Figure 1[1]. The above example picture shows a visual representation of a neural network, a graph of linked nodes. The network starts with some input and uses matrix multiplications to calculate an output. 
+Figure 1\cite{neuralnetwork}. The above example picture shows a visual representation of a neural network, a graph of linked nodes. The network starts with some input and uses matrix multiplications to calculate an output. 
 \end{flushleft}
 
 \subsection{Reinforcement learning}
@@ -75,9 +76,9 @@ The state is a concrete and immediate situation in which the agent finds itself,
 The reward is the feedback, either positive or negative, given to the agent with which the success or failure of the agent’s actions can be measured.
 \end{flushleft}
 
-\begin{center}
+\begin{figure}
 \includegraphics[width=\linewidth]{reinforcement_learning}
-\end{center}
+\end{figure}
 
 \begin{flushleft}
 Figure 2[3]. The agent-environment loop. The environment gives the agent a state (st), the agent takes an action (at) based on the state, the environment rewards (rt+1) the agent appropriately according to the action and also sends the next state (st+1) and the loop repeats itself.
@@ -143,9 +144,9 @@ The Q-value is updated according to the Bellman equation:
 After a lot of iterations, the Q-table is able to solve the problem it was trained for.
 \end{flushleft}
 
-\begin{center}
+\begin{figure}
 \includegraphics[width=\linewidth]{q_table}
-\end{center}
+\end{figure}
 
 Figure 5[8] Q-Tables during the initialization and training. The columns are the actions and the rows are the states. 
 
@@ -255,6 +256,25 @@ Maximizing the value function can be done by using gradient descent. This become
 \subsection{Requirements}
 \subsection{Method}
 \subsection{Pictures}
+adawdwdawdwd
+\begin{figure}
+\includegraphics[width=\linewidth]{simulator}
+\end{figure}
+awdawdawdawdawdawd
+\begin{figure}
+\includegraphics[width=\linewidth]{unity}
+\end{figure}
+
+\begin{figure}
+\includegraphics[width=\linewidth]{pycharm}
+\caption{C\# editor:  by Jetbrains}
+\end{figure}
+
+\begin{figure}
+\includegraphics[width=\linewidth]{csharp}
+\caption{C\# editor: Rider by Jetbrains}
+\end{figure}
+
 
 \section{Results}
 \subsection{Q-learning}
@@ -271,12 +291,13 @@ Maximizing the value function can be done by using gradient descent. This become
 \section{Conclusion}
 
 \section{Sources}
-
+\clearpage
 \begin{thebibliography}{9}
-\bibitem{latexcompanion} 
-Michel Goossens, Frank Mittelbach, and Alexander Samarin. 
-\textit{The \LaTeX\ Companion}. 
-Addison-Wesley, Reading, Massachusetts, 1993.
+\bibitem{neuralnetwork} 
+Neural network picture from machine learning website. 
+\newline
+Retrieved on November 1, 2018.
+\\\texttt{https://www.neuraldesigner.com}
  
 \bibitem{einstein} 
 Albert Einstein. 
