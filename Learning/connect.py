@@ -41,3 +41,7 @@ class Connect:
         else:
             raise Exception(f"crash value not 0 or 1, got:{unsorted[length - 1]}")
         return s_reversed, distance, crash
+
+    def close(self):
+        self.server_sock.close()
+        self.client_sock.close()

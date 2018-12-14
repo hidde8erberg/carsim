@@ -7,7 +7,9 @@ Assets/AssetStoreTools*
 UpgradeLog.htm
 UnityPackageManager/
 
-tensorboard/
+# tensorboard/
+
+Report/
 
 _AI/
 

@@ -7,17 +7,20 @@ import matplotlib.pyplot as plt
 
 
 class DQN:
-    def __init__(self, training=False, tensorboard=False):
+    def __init__(self, training=False, tensorboard=False, graph=False, lr=1e-5, gamma=0.95, batch=5000, sample=100, epis=250):
         # HYPER PARAMETERS
-        self.LEARNING_RATE = 1e-5
-        self.GAMMA = 0.95
-        self.EXPLORE_START = 0.8
+        self.LEARNING_RATE = lr
+        self.GAMMA = gamma
+        self.EXPLORE_START = 0.95
         self.EXPLORE_STOP = 0.01
         self.DECAY_RATE = 1e-4
-        self.BATCH_SIZE = 5000
-        self.SAMPLE_SIZE = 100
-        self.N_EPISODES = 45
-        
+        self.BATCH_SIZE = batch
+        self.SAMPLE_SIZE = sample
+        self.N_EPISODES = epis
+
+        self.NAME = f"lr({self.LEARNING_RATE})_gamma({self.GAMMA})_batch({self.BATCH_SIZE})_sample({self.SAMPLE_SIZE})"
+        print(self.NAME)
+
         self.memory = deque(maxlen=100000)
 
         self.last_dist = 0
@@ -30,15 +33,21 @@ class DQN:
             if tensorboard: 
                 self.tensorboard()
             reward, loss = self.train(tensorboard)
-            self.graph(reward, loss)
+            if graph:
+                self.graph(reward, loss)
         else:
             self.run()
 
+        self.conn.close()
+
     def create_dqn(self):
+        tf.reset_default_graph()
+
         with tf.name_scope("Placeholders"):
             self.sensors = tf.placeholder(dtype=tf.float32, shape=[None, 5], name="Sensors")
             self.actions = tf.placeholder(dtype=tf.float32, shape=[None], name="Actions")
             self.target_q = tf.placeholder(dtype=tf.float32, shape=[None], name="Target_Q")
+            self.distance = tf.placeholder(dtype=tf.float32, shape=(), name="Distance")
 
         with tf.name_scope("Network"):
             layer1 = tf.layers.dense(self.sensors, 25, activation=tf.nn.relu, name="layer1")
@@ -55,9 +64,6 @@ class DQN:
 
         with tf.name_scope("Train"):
             self.opt = tf.train.AdamOptimizer(self.LEARNING_RATE).minimize(self.loss)
-
-        with tf.name_scope("Accuracy"):
-            self.accuracy = 1
 
     def fill_memory(self):
         state, reward, done = self.step(self.rand_act())
@@ -155,18 +161,19 @@ class DQN:
                         self.target_q: target_list
                     })
 
-                    if tensorboard:
+                    if crash and tensorboard:
                         summary = sess.run(self.write_op, feed_dict={
                             self.sensors: states,
                             self.actions: actions,
-                            self.target_q: target_list
+                            self.target_q: target_list,
+                            self.distance: total_reward
                         })
                         self.writer.add_summary(summary, episode)
                         self.writer.flush()
 
                 if total_reward > record:
                     record = total_reward
-                    self.save(sess)
+                    #self.save(sess)
 
         return rewards_list, loss_list
 
@@ -193,8 +200,11 @@ class DQN:
         return [self.memory[i] for i in space]
 
     def tensorboard(self):
-        self.writer = tf.summary.FileWriter("./tensorboard/pg/1")
+        self.writer = tf.summary.FileWriter(f"./logs/{self.NAME}")
+        tf.summary.scalar("Q-value", self.Q)
+        #tf.summary.scalar("Q-target", self.target_q)
         tf.summary.scalar("Loss", self.loss)
+        tf.summary.scalar("Distance", self.distance)
         self.write_op = tf.summary.merge_all()
 
     def graph(self, reward, loss):
