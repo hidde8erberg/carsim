@@ -8,7 +8,7 @@ import sys
 import getopt
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 
-learning_method = sys.argv[1] if len(sys.argv) > 1 else 0
+learning_method = int(sys.argv[1]) if len(sys.argv) > 1 else 0
 
 if learning_method == 1:
     lrs = [1e-3, 1e-5, 1e-6]
